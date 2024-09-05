@@ -12,14 +12,16 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
     primary = primary,
-    secondary = PurpleGrey80,
+    onPrimary = onPrimary,
+    secondary = secondary,
     tertiary = Pink80,
     background = background
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = primary,
-    secondary = PurpleGrey40,
+    onPrimary = onPrimary,
+    secondary = secondary,
     tertiary = Pink40,
     background = background
 
@@ -47,7 +49,7 @@ fun AppsSquareTaskTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+//        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
