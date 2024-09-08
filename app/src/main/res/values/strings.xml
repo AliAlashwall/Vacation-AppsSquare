@@ -7,5 +7,21 @@
     <string name="back">Back</string>
     <string name="navigate_back">navigate back</string>
     <string name="city_image">city Image</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_your_personal_profile_com_and_follow">Create your personal profile.com and follow.</string>
+    <string name="email">Email</string>
+    <string name="city">City</string>
+    <string name="password">Password</string>
+    <string name="terms_of_service">By signing up, you agree to the</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="terms_of_service_and_privacy_policy">Terms of Service and Privacy Policy</string>
+    <string name="login">Login</string>
+    <string name="enter_to_your_personal_profile_com_and_follow">Enter to your personal profile.com and follow.</string>
+    <string name="dont_have_account">Don’t have an account yet?</string>
+    <string name="start_image">start image</string>
+    <string name="aspen">Aspen</string>
+    <string name="explore">Explore</string>
+    <string name="plan_your">Plan your</string>
 </resources>
 

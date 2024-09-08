@@ -2,14 +2,16 @@ package com.example.appssquaretask.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.appssquaretask.R
 
 
-//val Abel = FontFamily(
-//    Font(R.font.abel, FontWeight.Normal)
-//)
+val Hiatus = FontFamily(
+    Font(R.font.hiatus, FontWeight.Normal)
+)
 
 
 val Typography = Typography(
@@ -19,8 +21,9 @@ val Typography = Typography(
         fontSize = 46.sp,
         fontWeight = FontWeight(600)
     ),
+
     displaySmall = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = Hiatus,
         fontSize = 46.sp,
         fontWeight = FontWeight(400)
     ),

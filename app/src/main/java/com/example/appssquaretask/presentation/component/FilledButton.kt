@@ -15,12 +15,18 @@ import com.example.appssquaretask.presentation.theme.AppsSquareTaskTheme
 import com.example.appssquaretask.presentation.theme.primary
 
 @Composable
-fun FilledButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun FilledButton(
+    text: String, onClick: () -> Unit, modifier: Modifier = Modifier,
+    enable: Boolean = true
+) {
     Button(
         onClick = onClick,
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(primary),
-        shape = MaterialTheme.shapes.medium
+        colors = ButtonDefaults.buttonColors(
+            containerColor = primary,
+        ),
+        shape = MaterialTheme.shapes.medium,
+        enabled = true
     ) {
         Text(
             text = text,
@@ -28,7 +34,7 @@ fun FilledButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifie
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 17.dp)
+                .padding(vertical = 12.dp)
         )
     }
 }
@@ -39,7 +45,8 @@ private fun FilledButtonPreview() {
     AppsSquareTaskTheme {
         FilledButton(
             text = "Button",
-            onClick = {}
+            onClick = {},
+            enable = false
         )
     }
 }

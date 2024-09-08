@@ -10,15 +10,46 @@ import androidx.navigation.navArgument
 import com.example.appssquaretask.data.model.citiesList
 import com.example.appssquaretask.presentation.screens.cityDetails.CityDetails
 import com.example.appssquaretask.presentation.screens.commingSoon.ComingSoonScreen
+import com.example.appssquaretask.presentation.screens.login.LoginScreen
 import com.example.appssquaretask.presentation.screens.popularCities.PopularCitiesScreen
+import com.example.appssquaretask.presentation.screens.signup.SignUpScreen
+import com.example.appssquaretask.presentation.screens.start.StartScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavGraph(
     navController: NavHostController
 ) {
-    NavHost(navController = navController, startDestination = Screens.Home.name) {
+    NavHost(navController = navController, startDestination = Screens.Start.name) {
+        composable(route = Screens.Start.name) {
+            StartScreen {
+                navController.navigate(Screens.Signup.name)
+            }
+        }
+        composable(route = Screens.Signup.name) {
+            SignUpScreen(
+                onClickBack = { navController.popBackStack() },
+                onSignupClicked = { phoneNumber, password ->
+                    navController.navigate("${Screens.Login.name}/$phoneNumber/$password")
+                },
+                onLoginClicked = { navController.navigate("${Screens.Login.name}/${""}/${""}") })
 
+        }
+        composable(
+            route = "${Screens.Login.name}/{phoneNumber}/{password}",
+            arguments = listOf(
+                navArgument("phoneNumber") { type = NavType.StringType },
+                navArgument("password") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val phoneNumber = backStackEntry.arguments?.getString("phoneNumber")
+            val password = backStackEntry.arguments?.getString("password")
+            LoginScreen(
+                onLoginClicked = { navController.navigate(Screens.Home.name) },
+                userPhoneNumber = phoneNumber ?: "",
+                userPassword = password ?: "",
+                onSignupClicked = { navController.navigate(Screens.Signup.name) }
+            )
+        }
         composable(route = Screens.Home.name) {
             PopularCitiesScreen(onCityClicked = { cityIndex ->
                 navController.navigate("${Screens.Details.name}/$cityIndex")
