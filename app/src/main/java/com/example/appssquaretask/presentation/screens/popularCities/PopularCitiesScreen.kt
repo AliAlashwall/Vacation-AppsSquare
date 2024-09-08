@@ -2,7 +2,6 @@ package com.example.appssquaretask.presentation.screens.popularCities
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,49 +28,46 @@ import com.example.appssquaretask.presentation.theme.onPrimary
 
 @Composable
 fun PopularCitiesScreen(onCityClicked: (Int) -> Unit) {
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item {
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = stringResource(R.string.app_logo),
+                modifier = Modifier.size(136.dp, 117.dp)
+            )
 
-        Image(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = stringResource(R.string.app_logo),
-            modifier = Modifier.size(136.dp, 117.dp)
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-
-        LazyColumn {
-            item {
-                Text(
-                    text = stringResource(R.string.popular_cities),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = onPrimary,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .fillMaxWidth(),
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-            itemsIndexed(citiesList) { index, city  ->
-                CityItem(
-                    cityData = city,
-                    onCityClicked = { onCityClicked(index) }
-                )
-                if (city != citiesList.last()) {
-                    Spacer(modifier = Modifier.height(26.dp))
-                }
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+        item {
+            Text(
+                text = stringResource(R.string.popular_cities),
+                style = MaterialTheme.typography.titleLarge,
+                color = onPrimary,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+                    .fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+        itemsIndexed(citiesList) { index, city ->
+            CityItem(
+                cityData = city,
+                onCityClicked = { onCityClicked(index) }
+            )
+            if (city != citiesList.last()) {
+                Spacer(modifier = Modifier.height(26.dp))
             }
         }
-
     }
 
-
 }
+
 
 @Preview(
     showSystemUi = true,
