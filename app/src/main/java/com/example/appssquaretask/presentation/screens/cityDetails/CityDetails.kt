@@ -1,6 +1,5 @@
 package com.example.appssquaretask.presentation.screens.cityDetails
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.appssquaretask.R
-import com.example.appssquaretask.data.model.CityData
-import com.example.appssquaretask.presentation.theme.AppsSquareTaskTheme
 import com.example.appssquaretask.presentation.theme.onPrimary
 import com.example.appssquaretask.presentation.theme.primary
 import com.example.appssquaretask.presentation.theme.secondary
@@ -39,7 +35,10 @@ import com.example.appssquaretask.presentation.theme.secondary
 @ExperimentalMaterial3Api
 @Composable
 fun CityDetails(
-    cityData: CityData,
+    name: String,
+    description: String,
+    reviewsNum: Int,
+    image: String,
     onBackClicked: () -> Unit
 ) {
     Scaffold(
@@ -69,11 +68,9 @@ fun CityDetails(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = cityData.image),
-                contentDescription = stringResource(
-                    R.string.city_image
-                ),
+            AsyncImage(
+                model = image,
+                contentDescription = stringResource(id = R.string.city_image),
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .shadow(
@@ -95,14 +92,14 @@ fun CityDetails(
             ) {
 
                 Text(
-                    text = cityData.name,
+                    text = name,
                     style = MaterialTheme.typography.titleLarge,
                     color = onPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = "${cityData.reviewsNum} Reviews",
+                    text = "$reviewsNum Reviews",
                     style = MaterialTheme.typography.labelSmall,
                     color = secondary
                 )
@@ -111,25 +108,10 @@ fun CityDetails(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = stringResource(cityData.description),
+                text = description,
                 style = MaterialTheme.typography.labelSmall
             )
             Spacer(modifier = Modifier.weight(1f))
         }
-    }
-}
-
-@ExperimentalMaterial3Api
-@Preview
-@Composable
-private fun CityDetailsPreview() {
-    AppsSquareTaskTheme {
-        val cityData = CityData(
-            name = "Coeurdes Alpes ",
-            image = R.drawable.first_img,
-            reviewsNum = 355,
-            description = R.string.city_description,
-        )
-        CityDetails(cityData) {}
     }
 }

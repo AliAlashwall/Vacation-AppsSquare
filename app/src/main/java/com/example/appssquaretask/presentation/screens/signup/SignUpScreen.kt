@@ -1,6 +1,5 @@
 package com.example.appssquaretask.presentation.screens.signup
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,26 +35,38 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.appssquaretask.R
+import com.example.appssquaretask.data.model.RegisterResponse
+import com.example.appssquaretask.domain.DataState
 import com.example.appssquaretask.presentation.component.FilledButton
 import com.example.appssquaretask.presentation.component.MyTextField
-import com.example.appssquaretask.presentation.theme.AppsSquareTaskTheme
 import com.example.appssquaretask.presentation.theme.background
 import com.example.appssquaretask.presentation.theme.onSecondary
 import com.example.appssquaretask.presentation.theme.primary
+import kotlinx.coroutines.flow.StateFlow
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SignUpScreen(
     onClickBack: () -> Unit,
-    onSignupClicked: (String, String) -> Unit,
+    onSignupClicked: () -> Unit,
+    signUpViewModel: SignUpViewModel,
+    registerState: StateFlow<DataState<RegisterResponse>>,
+    onSuccessRegister: () -> Unit,
     onLoginClicked: () -> Unit
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel()
+    val registerResponse by registerState.collectAsStateWithLifecycle()
     val userData by signUpViewModel.userData.collectAsState()
+
+    LaunchedEffect(key1 = registerResponse) {
+        when (registerResponse) {
+            is DataState.Success -> {
+                onSuccessRegister()
+            }
+            else -> {}
+        }
+    }
     Column(
         modifier = Modifier
             .background(background)
@@ -180,7 +192,7 @@ fun SignUpScreen(
             text = stringResource(R.string.sign_up),
             onClick = {
                 if (userData.isAgreeTerms) {
-                    onSignupClicked(userData.phoneNumber, userData.password)
+                    onSignupClicked()
                 }
             },
             enable = userData.isAgreeTerms,
@@ -203,19 +215,13 @@ fun SignUpScreen(
 
                 }
             },
-            modifier = Modifier.fillMaxWidth().clickable { onLoginClicked() }, textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onLoginClicked() }, textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
             color = Color(0xFF91919F)
         )
 
 
-    }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-private fun SignUpScreenPreview() {
-    AppsSquareTaskTheme {
-        SignUpScreen({}, { _, _ -> }){}
     }
 }

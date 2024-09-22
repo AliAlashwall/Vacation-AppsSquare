@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,17 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.appssquaretask.R
-import com.example.appssquaretask.data.model.citiesList
+import com.example.appssquaretask.data.model.Restaurant
 import com.example.appssquaretask.presentation.screens.popularCities.component.CityItem
-import com.example.appssquaretask.presentation.theme.AppsSquareTaskTheme
 import com.example.appssquaretask.presentation.theme.background
 import com.example.appssquaretask.presentation.theme.onPrimary
 
 @Composable
-fun PopularCitiesScreen(onCityClicked: (Int) -> Unit) {
+fun PopularCitiesScreen(
+    onCityClicked: (String, Int, String, String) -> Unit,
+    citiesData: List<Restaurant>
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,26 +56,17 @@ fun PopularCitiesScreen(onCityClicked: (Int) -> Unit) {
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
-        itemsIndexed(citiesList) { index, city ->
+        items(citiesData) { city ->
             CityItem(
-                cityData = city,
-                onCityClicked = { onCityClicked(index) }
+                name = city.name,
+                reviewsNum = city.id,
+                image = city.image,
+                onCityClicked = { onCityClicked(city.name, city.id, city.address, city.image) }
             )
-            if (city != citiesList.last()) {
+            if (city != citiesData.last()) {
                 Spacer(modifier = Modifier.height(26.dp))
             }
         }
     }
 
-}
-
-
-@Preview(
-    showSystemUi = true,
-)
-@Composable
-private fun PopularCitiesScreenPreview() {
-    AppsSquareTaskTheme {
-        PopularCitiesScreen {}
-    }
 }

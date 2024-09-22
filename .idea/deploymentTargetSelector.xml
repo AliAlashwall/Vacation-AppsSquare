@@ -15,6 +15,14 @@
       </SelectionState>
       <SelectionState runConfigName="PopularCitiesScreenPreview">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-09-08T12:15:06.204495Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\sata\.android\avd\Pixel_4_API_33.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

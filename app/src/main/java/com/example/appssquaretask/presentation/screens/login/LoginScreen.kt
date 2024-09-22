@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,24 +29,33 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.appssquaretask.R
+import com.example.appssquaretask.data.model.LoginResponse
+import com.example.appssquaretask.domain.DataState
 import com.example.appssquaretask.presentation.component.FilledButton
 import com.example.appssquaretask.presentation.component.MyTextField
-import com.example.appssquaretask.presentation.theme.AppsSquareTaskTheme
 import com.example.appssquaretask.presentation.theme.background
 import com.example.appssquaretask.presentation.theme.onSecondary
 import com.example.appssquaretask.presentation.theme.primary
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun LoginScreen(
-    onLoginClicked: () -> Unit,
-    userPassword: String, userPhoneNumber: String,
-    onSignupClicked: () -> Unit
+    onLoginClicked: (String, String) -> Unit,
+    onSignupClicked: () -> Unit,
+    onSuccessLogin: () -> Unit,
+    loginStateFlow: StateFlow<DataState<LoginResponse>>
 ) {
-
-    val phoneNumberState = remember {
+    val loginState by loginStateFlow.collectAsStateWithLifecycle()
+    LaunchedEffect(loginState) {
+        when (loginState) {
+            is DataState.Success -> onSuccessLogin()
+            else -> {}
+        }
+    }
+    val emailState = remember {
         mutableStateOf("")
     }
     val passwordState = remember {
@@ -94,11 +105,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(14.dp))
 
         MyTextField(
-            value = phoneNumberState.value,
-            onValueChange = { phoneNumberState.value = it },
-            label = R.string.phone_number,
-            keyBoardType = KeyboardType.Phone,
-            placeholder = stringResource(R.string.phone_number),
+            value = emailState.value,
+            onValueChange = { emailState.value = it },
+            label = R.string.email,
+            keyBoardType = KeyboardType.Email,
+            placeholder = stringResource(R.string.email),
         )
 
         Spacer(modifier = Modifier.height(14.dp))
@@ -115,13 +126,7 @@ fun LoginScreen(
 
         FilledButton(
             text = stringResource(R.string.login),
-            onClick = {
-                if (userPhoneNumber == phoneNumberState.value &&
-                    userPassword == passwordState.value
-                ) {
-                    onLoginClicked()
-                }
-            },
+            onClick = { onLoginClicked(emailState.value, passwordState.value) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp)
@@ -150,14 +155,5 @@ fun LoginScreen(
         )
 
 
-    }
-}
-
-
-@Preview
-@Composable
-private fun LoginScreenPreview() {
-    AppsSquareTaskTheme {
-        LoginScreen({}, "", "") {}
     }
 }
